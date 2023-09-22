@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url('https://wallpapershome.com/images/pages/pic_h/5288.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    font-size: 20px;
+    color:white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: rgba(74, 26, 80, 0.841);
+     
+    padding: 10px; 
+    border: 2px solid #415c79; 
+    border-radius: 10px; 
+    text-align: center; 
+
+    
+}
+.hidden{
+    display:none;
+}
+
+pre{
+    margin-top: 400px;
+    font-size: 20px;
+    color:black;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: rgba(248, 237, 219, 0.3);
+    font-weight: bold;
+    font-size: medium;
+    /* border: 2px double #0b0b0b;  */
+    /* border-radius: 10px;  */
+    font-style: italic;
+}
+
+.weather-widget {
+    max-width: 300px;
+    margin-left: 1150px;
+    padding: 20px;
+    border: 1px solid #292b4d;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(158, 189, 238, 0.2);
+    background-image: url('https://img.freepik.com/free-photo/sunshine-clouds-sky-during-morning-background-blue-white-pastel-heaven-soft-focus-lens-flare-sunlight-abstract-blurred-cyan-gradient-peaceful-nature-open-view-out-windows-beautiful-summer-spring_1253-1092.jpg?w=2000');
+    /* background-color: #415c79; */
+    font-style:oblique;
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-image: alpha(0.5); */
+} 
+
+#location-input {
+    width: 95%;
+    padding-left: 10px;
+    height: 30px;
+    margin-bottom: 10px;
+    
+}
+
+/* #get-forecast {
+    background-color: #486c93;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+} */
+
+#weather-info {
+    display: none;
+    margin-top: 20px;
+    color: white;
+}
+
+#location-name {
+    font-size: 24px;
+}
+
+#temperature {
+    font-size: 18px;
+
+}
+
+#weather-image {
+    max-width: 100px;
+    margin-top: 10px;
+}
+
+button{
+    color:white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: rgba(74, 26, 80, 0.841);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover{
+    color:white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color:rgb(160, 13, 162,0.5);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .weather-widget {
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+}
