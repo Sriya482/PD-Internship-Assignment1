@@ -1,40 +1,95 @@
-const url="https://api.spotify.com/v1/artists?ids=7uIbLdzzSEqnX0Pkrb56cR%2C1tqysapcCh1lWEAc9dIFpa%2C2GoeZ0qOTt6kjsWW4eA6LS%2C0y59o4v8uw5crbN9M3JiL1%2C4IKVDbCSBTxBeAsMKjAuTs%2C70B80Lwx2sxti0M1Ng9e8K%2C3tHD07u1ON4uHxmnT9rwqZ%2C5ixQ5hSywFLUaxoaA0uVaH%2C4YRxDV8wJFPHPTeXepOstw%2C4fEkbug6kZzzJ8eYX6Kbbp"
-const token = "BQCz0BgJy-JMYPGm28Irjtxybo4cm3ubzBL_590H8VGDQW6j7gFGSEncoZkeSXOnYCD3MqvQ9lchmEb5HUaUYlG4MDiOrI_wrP7GmARKSYtTpvuW4SirLLzOFZXiClUhXsU4fTzb1a4tj7YSQ1aSN57FwVKCGP1coqutiU3dWZH3MLK0zrHxXUW3aiAM7fPuKeuHFMpjcpPrXxsmQsb-CU2aFKFPpWqdJoZLBJL7ChE8HxBXGFsvul2yjN0MyFVhtC4op4k4Ed3-T8wUEP20BAYD";
+const clientId = '473c10402e414f69a166dba11ce5e901';
+const clientSecret = '68da177027f24e458eab6a1e32530c55';
+
+const artistIds = [
+    '0oOet2f43PA68X5RxKobEy',
+    '1tqysapcCh1lWEAc9dIFpa',
+    '2GoeZ0qOTt6kjsWW4eA6LS',
+    '0y59o4v8uw5crbN9M3JiL1',
+    '4IKVDbCSBTxBeAsMKjAuTs',
+    '70B80Lwx2sxti0M1Ng9e8K',
+    '3tHD07u1ON4uHxmnT9rwqZ',
+    '5ixQ5hSywFLUaxoaA0uVaH',
+    '4YRxDV8wJFPHPTeXepOstw',
+    '4fEkbug6kZzzJ8eYX6Kbbp'
+  ];
 
 
-const request = new Request(
-    url,{
-        headers:{
-            'Authorization': `Bearer ${token}`
+const getAccessToken = async () => {
+    
+    const basicAuth = btoa(`${clientId}:${clientSecret}`);
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${basicAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
-    })
+        body: 'grant_type=client_credentials'
+    });
+
+    const data = await response.json();
+    if(response.status == 200) {
+        console.log("Success : ", data)
+   } else {
+      console.log('Server Error : ', data.error.message)
+       }
+    return data.access_token;
+};
 
 
+async function fetchArtistData(artistId, accessToken) {
+    const artistUrl = `https://api.spotify.com/v1/artists/${artistId}`;
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`
+    };
 
-    async function getData() {
-        try {
-            const response = await fetch(request);
-            const data = await response.json();
-            console.log(data);
-            
-            // Get the data-container element
-            const dataContainer = document.getElementById("data-container");
-
-            // Create an HTML structure to display the data (modify as needed)
-            const artistList = document.createElement("ul");
-
-            // Loop through the data and create list items for each artist
-            data.artists.forEach(artist => {
-                const listItem = document.createElement("li");
-                listItem.textContent = `Artist Name: ${artist.name}, Popularity: ${artist.popularity}`;
-                artistList.appendChild(listItem);
-            });
-
-            // Append the artistList to the data-container
-            dataContainer.appendChild(artistList);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+    try {
+        const response = await fetch(artistUrl, { headers });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching artist data:", error);
+        return null;
     }
+}
+// Render artists on the webpage
+const renderArtists = (artists) => {
+    const dataContainer = document.getElementById('data-container');
+    artists.forEach((artist) => {
+        const artistCard = document.createElement('div');
+        artistCard.classList.add('artist-card');
 
-getData()
+        const artistName = document.createElement('h2');
+        artistName.textContent = artist.name;
+
+        const artistImage = document.createElement('img');
+        artistImage.classList.add('artist-image');
+        artistImage.src = artist.images[1] ? artist.images[1].url : 'default-image.jpg';
+        artistImage.alt = artist.name;
+
+        const listItem = document.createElement("p");
+        listItem.textContent = `Popularity: ${artist.popularity},Followers:${artist.followers.total}`;
+
+
+        artistCard.appendChild(artistImage);
+        artistCard.appendChild(artistName);
+        artistCard.appendChild(listItem);
+        dataContainer.appendChild(artistCard);
+    });
+};
+
+const main = async () => {
+    try {
+        const accessToken = await getAccessToken();
+        const artistDataPromises = artistIds.map((artistId) => fetchArtistData(artistId, accessToken));
+        const topArtists = await Promise.all(artistDataPromises);
+        renderArtists(topArtists);
+        console.log(accessToken);
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+    console.log('Main function called.');
+};
+
+main();
